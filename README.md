@@ -1,6 +1,6 @@
 # ReadableBottomBar
 Yet another material bottom bar library for Android
-
+[![](https://jitpack.io/v/Jayqiu/ReadableBottomBar.svg)](https://jitpack.io/#Jayqiu/ReadableBottomBar)
 <img src="https://raw.githubusercontent.com/iammert/ReadableBottomBar/master/art/readablebottombar.png"/>
 
 ## GIF
@@ -88,7 +88,7 @@ dependencies {
 ## AndroidX
 ```gradle
 dependencies {
-    implementation 'com.github.Jayqiu:ReadableBottomBar:0.2'
+    implementation 'com.github.Jayqiu:ReadableBottomBar:0.3'
 }
 ```
 License
