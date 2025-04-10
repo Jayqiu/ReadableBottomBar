@@ -36,6 +36,7 @@ All design and inspiration credits goes to [Ranjit](https://www.uplabs.com/posts
         text="@string/profile" />
 </tabs>
 ```
+
 * Add bottom bar to your layout
 ```xml
 <com.iammert.library.readablebottombar.ReadableBottomBar
@@ -83,7 +84,12 @@ dependencies {
     implementation 'com.github.iammert:ReadableBottomBar:0.2'
 }
 ```
-
+## AndroidX
+```gradle
+dependencies {
+    implementation 'com.github.iammert:ReadableBottomBarX:0.1'
+}
+```
 License
 --------
 
