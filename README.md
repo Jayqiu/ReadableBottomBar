@@ -87,7 +87,7 @@ dependencies {
 ## AndroidX
 ```gradle
 dependencies {
-    implementation 'com.github.iammert:ReadableBottomBarX:0.1'
+    implementation 'com.github.Jayqiu:ReadableBottomBar:0.2'
 }
 ```
 License
