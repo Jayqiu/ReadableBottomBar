@@ -42,9 +42,9 @@ afterEvaluate {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
-                groupId = "com.github.iammert"
+                groupId = "com.github.Jayqiu"
                 artifactId = "ReadableBottomBarX"
-                version = "0.1"
+                version = "0.2"
             }
         }
     }
