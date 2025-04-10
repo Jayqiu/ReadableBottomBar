@@ -10,6 +10,8 @@
     <com.iammert.library.readablebottombar.ReadableBottomBar
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        app:rbb_indicatorHeight="8dp"
+        app:rbb_indicatorRound="4dp"
         app:rbb_activeItemType="icon"
         app:rbb_tabs="@xml/tabs"/>
 

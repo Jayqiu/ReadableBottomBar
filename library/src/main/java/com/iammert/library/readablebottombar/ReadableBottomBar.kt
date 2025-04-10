@@ -3,15 +3,20 @@ package com.iammert.library.readablebottombar
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Outline
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import com.iammert.readablebottombar.R
 import java.lang.IllegalArgumentException
 
-class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : LinearLayout(context, attrs, defStyleAttr) {
+class ReadableBottomBar @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : LinearLayout(context, attrs, defStyleAttr) {
 
     interface ItemSelectListener {
         fun onItemSelected(index: Int)
@@ -33,6 +38,7 @@ class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: Attri
     private var tabInitialSelectedIndex = 0
     private var tabBackgroundColor: Int = Color.WHITE
     private var tabIndicatorColor: Int = Color.BLACK
+    private var tabIndicatorRound: Int = 0
     private var tabIndicatorHeight: Int = 10
 
     private var layoutWidth: Float = 0f
@@ -52,39 +58,63 @@ class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: Attri
         addUpdateListener { animation ->
             val marginLeft = animation.animatedValue as Float
             val marginParam: LinearLayout.LayoutParams = indicatorView?.layoutParams as LayoutParams
-            marginParam.setMargins(marginLeft.toInt(), marginParam.topMargin, marginParam.rightMargin, marginParam.bottomMargin)
+            marginParam.setMargins(
+                marginLeft.toInt(),
+                marginParam.topMargin,
+                marginParam.rightMargin,
+                marginParam.bottomMargin
+            )
             indicatorView?.layoutParams = marginParam
         }
     }
 
     init {
-        val typedArray = context.theme.obtainStyledAttributes(attrs, R.styleable.ReadableBottomBar, defStyleAttr, defStyleAttr)
+        val typedArray = context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.ReadableBottomBar,
+            defStyleAttr,
+            defStyleAttr
+        )
 
-        tabBackgroundColor = typedArray.getColor(R.styleable.ReadableBottomBar_rbb_backgroundColor, Color.WHITE)
-        tabIndicatorColor = typedArray.getColor(R.styleable.ReadableBottomBar_rbb_indicatorColor, Color.BLACK)
-        tabIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.ReadableBottomBar_rbb_indicatorHeight, 10)
-        tabInitialSelectedIndex = typedArray.getInt(R.styleable.ReadableBottomBar_rbb_initialIndex, 0)
+        tabBackgroundColor =
+            typedArray.getColor(R.styleable.ReadableBottomBar_rbb_backgroundColor, Color.WHITE)
+        tabIndicatorColor =
+            typedArray.getColor(R.styleable.ReadableBottomBar_rbb_indicatorColor, Color.BLACK)
+        tabIndicatorRound =
+            typedArray.getDimensionPixelSize(R.styleable.ReadableBottomBar_rbb_indicatorRound, 2)
+        tabIndicatorHeight =
+            typedArray.getDimensionPixelSize(R.styleable.ReadableBottomBar_rbb_indicatorHeight, 10)
+        tabInitialSelectedIndex =
+            typedArray.getInt(R.styleable.ReadableBottomBar_rbb_initialIndex, 0)
 
         val textSize = typedArray.getDimension(R.styleable.ReadableBottomBar_rbb_textSize, 15f)
-        val textColor = typedArray.getColor(R.styleable.ReadableBottomBar_rbb_textColor, Color.BLACK)
-        val iconColor = typedArray.getColor(R.styleable.ReadableBottomBar_rbb_iconColor, Color.BLACK)
-        val activeItemType = ItemType.getType(typedArray.getInt(R.styleable.ReadableBottomBar_rbb_activeItemType, ItemType.Icon.value))
+        val textColor =
+            typedArray.getColor(R.styleable.ReadableBottomBar_rbb_textColor, Color.BLACK)
+        val iconColor =
+            typedArray.getColor(R.styleable.ReadableBottomBar_rbb_iconColor, Color.BLACK)
+        val activeItemType = ItemType.getType(
+            typedArray.getInt(
+                R.styleable.ReadableBottomBar_rbb_activeItemType,
+                ItemType.Icon.value
+            )
+        )
 
         val tabXmlResource = typedArray?.getResourceId(R.styleable.ReadableBottomBar_rbb_tabs, 0)
-        val bottomBarItemConfigList = ConfigurationXmlParser(context = context, xmlRes = tabXmlResource!!).parse()
+        val bottomBarItemConfigList =
+            ConfigurationXmlParser(context = context, xmlRes = tabXmlResource!!).parse()
 
         setBackgroundColor(tabBackgroundColor)
         orientation = VERTICAL
 
         bottomBarItemList = bottomBarItemConfigList.map { config ->
             BottomBarItem(
-                    config.index,
-                    config.text,
-                    textSize,
-                    textColor,
-                    iconColor,
-                    config.drawable,
-                    activeItemType
+                config.index,
+                config.text,
+                textSize,
+                textColor,
+                iconColor,
+                config.drawable,
+                activeItemType
             )
         }
 
@@ -96,7 +126,7 @@ class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: Attri
         layoutWidth = w.toFloat()
         layoutHeight = h.toFloat()
 
-        itemWidth = layoutWidth / bottomBarItemList.size
+        itemWidth = (layoutWidth / bottomBarItemList.size)
         itemHeight = layoutHeight
 
         post {
@@ -117,7 +147,8 @@ class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: Attri
         val item = bottomBarItemList[index]
         for (i in 0 until childCount) {
             if (TAG_CONTAINER == getChildAt(i).tag) {
-                val selectedItemView = ((getChildAt(i) as LinearLayout).getChildAt(index) as BottomBarItemView)
+                val selectedItemView =
+                    ((getChildAt(i) as LinearLayout).getChildAt(index) as BottomBarItemView)
                 if (selectedItemView != currentSelectedView) {
                     onSelected(item.index, selectedItemView)
                 }
@@ -134,7 +165,10 @@ class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: Attri
 
         bottomBarItemList.forEach { item ->
             val bottomBarItem = BottomBarItemView(context).apply {
-                layoutParams = LinearLayout.LayoutParams(itemWidth.toInt(), itemHeight.toInt() - tabIndicatorHeight)
+                layoutParams = LinearLayout.LayoutParams(
+                    itemWidth.toInt(),
+                    itemHeight.toInt() - tabIndicatorHeight
+                )
 
                 setText(item.text)
                 setItemType(item.type)
@@ -178,16 +212,19 @@ class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: Attri
 
     private fun drawIndicator() {
         indicatorView = View(context).apply {
-            val indicatorLayoutParams = LinearLayout.LayoutParams(itemWidth.toInt(), tabIndicatorHeight)
+            val indicatorLayoutParams =
+                LinearLayout.LayoutParams(itemWidth.toInt(), tabIndicatorHeight)
             indicatorLayoutParams.setMargins((tabInitialSelectedIndex * itemWidth).toInt(), 0, 0, 0)
             layoutParams = indicatorLayoutParams
             setBackgroundColor(tabIndicatorColor)
         }
+        indicatorView?.setRoundRect(tabIndicatorRound.toFloat())
         addView(indicatorView)
     }
 
     private fun animateIndicator(currentItemIndex: Int) {
-        val previousMargin: Float = (indicatorView?.layoutParams as? LinearLayout.LayoutParams)?.leftMargin?.toFloat()
+        val previousMargin: Float =
+            (indicatorView?.layoutParams as? LinearLayout.LayoutParams)?.leftMargin?.toFloat()
                 ?: 0F
         val currentMargin: Float = currentItemIndex * itemWidth
         indicatorAnimator?.setFloatValues(previousMargin, currentMargin)
@@ -209,6 +246,15 @@ class ReadableBottomBar @JvmOverloads constructor(context: Context, attrs: Attri
 
         const val TAG_CONTAINER = "TAG_CONTAINER"
 
+    }
+
+    private  fun View.setRoundRect(radius: Float) {
+        this.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width, view.height, radius)
+            }
+        }
+        this.clipToOutline = true
     }
 
 }

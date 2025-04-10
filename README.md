@@ -67,6 +67,7 @@ bottomBar.selectItem(index)
     app:rbb_indicatorColor=""
     app:rbb_initialIndex=""
     app:rbb_backgroundColor=""
+    aap:rbb_indicatorRound=""
     app:rbb_textSize=""
     app:rbb_activeItemType="text or icon"/>
 ```

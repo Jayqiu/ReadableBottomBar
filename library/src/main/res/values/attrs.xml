@@ -4,6 +4,7 @@
         <attr name="rbb_tabs" format="reference" />
         <attr name="rbb_backgroundColor" format="color" />
         <attr name="rbb_indicatorColor" format="color" />
+        <attr name="rbb_indicatorRound" format="dimension" />
         <attr name="rbb_indicatorHeight" format="dimension" />
         <attr name="rbb_initialIndex" format="integer" />
         <attr name="rbb_textColor" format="color" />

@@ -44,7 +44,7 @@ afterEvaluate {
                 from(components["release"])
                 groupId = "com.github.Jayqiu"
                 artifactId = "ReadableBottomBar"
-                version = "0.2"
+                version = "0.3"
             }
         }
     }
